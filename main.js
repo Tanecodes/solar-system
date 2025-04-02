@@ -49,8 +49,42 @@ function animateStars() {
       star.flickerSpeed *= -1;
     }
   }
-  drawStars()
+  drawStars();
+  drawSaturn();
   requestAnimationFrame(animateStars);
 };
+
+// function to draw saturn
+function drawSaturn() {
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
+  const radius = 250;
+
+  // creating a glow gradient for saturn
+  const glowRadius = radius * 1.06;
+  const glowGradient = ctx.createRadialGradient(centerX, centerY, radius, centerX, centerY, glowRadius);
+  glowGradient.addColorStop(0, "rgba(244, 197, 66, 0.5)");
+  glowGradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+
+  // drawing glow around saturn
+  ctx.fillStyle = glowGradient;
+  ctx.beginPath();
+  ctx.arc(centerX, centerY, glowRadius, 0, Math.PI * 2);
+  ctx.fill();
+
+  // creating color for saturn
+  const gradient = ctx.createRadialGradient(centerX - 30, centerY - 30, 20, centerX, centerY, radius);
+  gradient.addColorStop(0, "#f4c542");
+  gradient.addColorStop(0.5, "#d99e30");
+  gradient.addColorStop(1, "#a36d20");
+
+  // drawing satrun on the canvas
+  ctx.fillStyle = gradient;
+  ctx.beginPath();
+  ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+  ctx.fill();
+};
+
+
 
 animateStars();
