@@ -41,18 +41,7 @@ function drawStars() {
   }
 };
 
-// creating animation for twinkling stars
-function animateStars() {
-  for (let star of stars) {
-    star.brightness += star.flickerSpeed;
-    if (star.brightness > 255 || star.brightness < 100) {
-      star.flickerSpeed *= -1;
-    }
-  }
-  drawStars();
-  drawSaturn();
-  requestAnimationFrame(animateStars);
-};
+let ringAngle = 0;
 
 // function to draw saturn
 function drawSaturn() {
@@ -72,6 +61,18 @@ function drawSaturn() {
   ctx.arc(centerX, centerY, glowRadius, 0, Math.PI * 2);
   ctx.fill();
 
+  // drawing rings for saturn
+  ctx.save();
+  ctx.translate(centerX, centerY);
+  ctx.rotate(ringAngle);
+  ctx.beginPath();
+  ctx.ellipse(0, 0, radius * 1.5, radius * 0.5, 0, 0, Math.PI * 2);
+  ctx.strokeStyle = "rgba(200, 180, 150, 0.6)";
+  ctx.lineWidth = 10;
+  ctx.stroke();
+  ctx.closePath();
+  ctx.restore();
+
   // creating color for saturn
   const gradient = ctx.createRadialGradient(centerX - 30, centerY - 30, 20, centerX, centerY, radius);
   gradient.addColorStop(0, "#f4c542");
@@ -85,6 +86,18 @@ function drawSaturn() {
   ctx.fill();
 };
 
-
+  // creating animation for twinkling stars
+  function animateStars() {
+    for (let star of stars) {
+      star.brightness += star.flickerSpeed;
+      if (star.brightness > 255 || star.brightness < 100) {
+        star.flickerSpeed *= -1;
+      }
+    }
+    ringAngle += 0.005;
+    drawStars();
+    drawSaturn();
+    requestAnimationFrame(animateStars);
+  };
 
 animateStars();
